@@ -4,7 +4,7 @@ import { ProductCard } from "./product-card";
 export function ProductCatalog() {
   return (
     <div className="bg-background">
-      <div className="container py-16 md:py-24 space-y-16">
+      <div className="container pt-8 pb-16 md:pt-12 md:pb-24 space-y-16">
         {categories.map((category) => (
           <section key={category.id} id={category.id} className="scroll-mt-20">
             <h2 className="text-3xl md:text-4xl font-headline mb-8 text-center">{category.name}</h2>
