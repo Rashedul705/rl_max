@@ -21,6 +21,7 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Plus, Minus } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 // Even in a client component, params can be a promise.
 // We can use `React.use` to unwrap it.
