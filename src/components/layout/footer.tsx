@@ -1,16 +1,66 @@
 import Link from "next/link";
-import { Facebook, Instagram, Youtube } from "lucide-react";
+import { Facebook, Instagram, Youtube, Phone, Mail, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export function Footer() {
   return (
-    <footer className="bg-card">
-      <div className="container py-8">
-        <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-          <div className="text-center md:text-left">
-            <h3 className="text-lg font-bold">Rodela&apos;s Boutique</h3>
-            <p className="text-sm text-muted-foreground">Your destination for premium lifestyle products.</p>
+    <footer className="bg-card text-card-foreground">
+      <div className="container py-12 md:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* About Section */}
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold">Rodela&apos;s Boutique</h3>
+            <p className="text-muted-foreground">
+              Your destination for premium apparel and lifestyle products, curated with an eye for elegance and quality.
+            </p>
           </div>
+
+          {/* Quick Links */}
+          <div className="space-y-4">
+            <h4 className="text-lg font-semibold">Quick Links</h4>
+            <ul className="space-y-2">
+              <li><Link href="/" className="text-muted-foreground hover:text-foreground">Home</Link></li>
+              <li><Link href="#categories" className="text-muted-foreground hover:text-foreground">Shop</Link></li>
+              <li><Link href="#why-us" className="text-muted-foreground hover:text-foreground">About Us</Link></li>
+              <li><Link href="#contact" className="text-muted-foreground hover:text-foreground">Contact</Link></li>
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div className="space-y-4">
+            <h4 className="text-lg font-semibold">Contact Us</h4>
+            <ul className="space-y-3 text-muted-foreground">
+              <li className="flex items-start gap-3">
+                <MapPin className="h-5 w-5 mt-1 flex-shrink-0" />
+                <span>Rajshahi, Bangladesh</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Phone className="h-5 w-5 mt-1 flex-shrink-0" />
+                <a href="tel:+8801776180359" className="hover:text-foreground">01776180359</a>
+              </li>
+              <li className="flex items-start gap-3">
+                <Mail className="h-5 w-5 mt-1 flex-shrink-0" />
+                <a href="mailto:support@rodelas.com" className="hover:text-foreground">support@rodelas.com</a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Newsletter */}
+          <div className="space-y-4">
+            <h4 className="text-lg font-semibold">Stay Updated</h4>
+            <p className="text-muted-foreground">Subscribe to our newsletter for the latest arrivals and offers.</p>
+            <div className="flex w-full max-w-sm items-center space-x-2">
+                <Input type="email" placeholder="Your email" className="bg-background" />
+                <Button type="submit" className="bg-accent hover:bg-accent/90 text-accent-foreground">Subscribe</Button>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-12 border-t border-border pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-muted-foreground">
+            &copy; {new Date().getFullYear()} Rodela's Boutique. All Rights Reserved.
+          </p>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" asChild>
               <Link href="#" aria-label="Facebook">
@@ -28,9 +78,6 @@ export function Footer() {
               </Link>
             </Button>
           </div>
-        </div>
-        <div className="mt-8 border-t border-border pt-6 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Rodela's Boutique. All rights reserved.</p>
         </div>
       </div>
     </footer>
