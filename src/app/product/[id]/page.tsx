@@ -1,3 +1,6 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import { products } from '@/lib/data';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
@@ -8,32 +11,58 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from '@/components/ui/carousel';
 import { AddToCartButton } from '@/components/cart/add-to-cart-button';
 import { ProductCard } from '@/components/sections/product-card';
 import { notFound } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Card, CardContent } from '@/components/ui/card';
 
 export default function ProductDetailPage({ params }: { params: { id: string } }) {
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+
   const product = products.find((p) => p.id === params.id);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setCurrent(api.selectedScrollSnap());
+
+    const handleSelect = () => {
+      setCurrent(api.selectedScrollSnap());
+    };
+
+    api.on('select', handleSelect);
+
+    return () => {
+      api.off('select', handleSelect);
+    };
+  }, [api]);
 
   if (!product) {
     notFound();
   }
 
-  const relatedProducts = products.filter(
-    (p) => p.category === product.category && p.id !== product.id
-  ).slice(0, 4);
-  
+  const relatedProducts = products
+    .filter((p) => p.category === product.category && p.id !== product.id)
+    .slice(0, 4);
+
   // For gallery, we'll just use the main product image multiple times as placeholders
   const galleryImages = [
-      product.image,
-      product.image.replace(/seed\/\w+/, `seed/${product.id}A`),
-      product.image.replace(/seed\/\w+/, `seed/${product.id}B`),
-      product.image.replace(/seed\/\w+/, `seed/${product.id}C`),
+    product.image,
+    product.image.replace(/seed\/\w+/, `seed/${product.id}A`),
+    product.image.replace(/seed\/\w+/, `seed/${product.id}B`),
+    product.image.replace(/seed\/\w+/, `seed/${product.id}C`),
   ];
 
+  const handleThumbnailClick = (index: number) => {
+    api?.scrollTo(index);
+  };
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -42,7 +71,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         <div className="container">
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
             <div>
-              <Carousel className="w-full">
+              <Carousel setApi={setApi} className="w-full">
                 <CarouselContent>
                   {galleryImages.map((img, index) => (
                     <CarouselItem key={index}>
@@ -61,43 +90,82 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                 <CarouselPrevious className="left-2" />
                 <CarouselNext className="right-2" />
               </Carousel>
+              <div className="grid grid-cols-4 gap-2 mt-4">
+                {galleryImages.map((img, index) => (
+                   <div
+                    key={index}
+                    className={`aspect-square relative rounded-md overflow-hidden border-2 ${
+                      index === current ? 'border-primary' : 'border-transparent'
+                    } cursor-pointer`}
+                    onClick={() => handleThumbnailClick(index)}
+                  >
+                    <Image
+                      src={img}
+                      alt={`Thumbnail ${index + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="25vw"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
             <div className="flex flex-col justify-center">
               <h1 className="text-3xl md:text-4xl font-bold">{product.name}</h1>
               <div className="mt-4">
-                 <Badge variant="outline">{product.category}</Badge>
+                <Badge variant="outline">{product.category}</Badge>
               </div>
               <p className="mt-4 text-3xl font-bold text-primary">
                 BDT {product.price.toLocaleString()}
               </p>
-              
+
               <div className="mt-4 text-sm text-muted-foreground">
                 {product.stock > 0 ? (
-                  <p>In Stock: <span className="font-semibold text-green-600">{product.stock} items available</span></p>
+                  <p>
+                    In Stock:{' '}
+                    <span className="font-semibold text-green-600">
+                      {product.stock} items available
+                    </span>
+                  </p>
                 ) : (
                   <p className="font-semibold text-red-600">Out of Stock</p>
                 )}
               </div>
 
               <div className="mt-6 prose prose-stone max-w-none text-muted-foreground">
-                  <p>This is a placeholder description for the {product.name}. A more detailed and compelling description will be available soon, highlighting its unique features, materials, and why it's a must-have item.</p>
+                <p>
+                  This is a placeholder description for the {product.name}. A
+                  more detailed and compelling description will be available
+                  soon, highlighting its unique features, materials, and why
+                  it's a must-have item.
+                </p>
               </div>
-              
+
               <div className="mt-8 flex flex-col sm:flex-row gap-2">
-                <AddToCartButton product={product} variant="outline" className="w-full flex-1 text-lg py-6">
+                <AddToCartButton
+                  product={product}
+                  variant="outline"
+                  className="w-full flex-1 text-lg py-6"
+                >
                   Add to Cart
                 </AddToCartButton>
-                <AddToCartButton product={product} redirectToCheckout className="w-full flex-1 bg-accent hover:bg-accent/90 text-accent-foreground text-lg py-6">
+                <AddToCartButton
+                  product={product}
+                  redirectToCheckout
+                  className="w-full flex-1 bg-accent hover:bg-accent/90 text-accent-foreground text-lg py-6"
+                >
                   Order Now
                 </AddToCartButton>
               </div>
             </div>
           </div>
-          
+
           {relatedProducts.length > 0 && (
             <div className="mt-24">
               <Separator />
-              <h2 className="text-3xl md:text-4xl mt-16 mb-8 text-center">Related Products</h2>
+              <h2 className="text-3xl md:text-4xl mt-16 mb-8 text-center">
+                Related Products
+              </h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4">
                 {relatedProducts.map((p) => (
                   <ProductCard key={p.id} product={p} />
