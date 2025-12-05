@@ -29,6 +29,7 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const bangladeshDistricts = [
   'Bagerhat', 'Bandarban', 'Barguna', 'Barishal', 'Bhola', 'Bogra',
@@ -79,7 +80,7 @@ export default function CheckoutPage() {
   const selectedCity = form.watch('city');
 
   useEffect(() => {
-    if (selectedCity === 'Dhaka') {
+    if (selectedCity === 'Rajshahi') {
       setShippingCharge(60);
     } else if (selectedCity) {
       setShippingCharge(120);
@@ -136,7 +137,7 @@ export default function CheckoutPage() {
                             </CardHeader>
                             <CardContent>
                                 <Form {...form}>
-                                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                                    <form onSubmit={form.handleSubmit(onSubmit)} id="checkout-form" className="space-y-6">
                                         <FormField
                                             control={form.control}
                                             name="fullName"
@@ -213,6 +214,26 @@ export default function CheckoutPage() {
                                 <CardTitle>Order Summary</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4">
+                                <div className="space-y-3">
+                                    {cart.map(item => (
+                                        <div key={item.product.id} className="flex items-center gap-4">
+                                            <div className="relative h-16 w-16 rounded-md overflow-hidden">
+                                                <Image 
+                                                    src={item.product.image} 
+                                                    alt={item.product.name} 
+                                                    fill 
+                                                    className="object-cover"
+                                                />
+                                            </div>
+                                            <div className="flex-1">
+                                                <p className="text-sm font-medium leading-tight">{item.product.name}</p>
+                                                <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
+                                            </div>
+                                            <p className="text-sm font-medium">BDT {(item.product.price * item.quantity).toLocaleString()}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                                <Separator />
                                 <div className="space-y-2">
                                     <div className="flex justify-between">
                                         <span>Subtotal</span>
@@ -258,3 +279,5 @@ export default function CheckoutPage() {
     </div>
   );
 }
+
+    
