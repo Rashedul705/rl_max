@@ -30,7 +30,7 @@ import { Footer } from '@/components/layout/footer';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { X } from 'lucide-react';
+import { X, Plus, Minus } from 'lucide-react';
 
 const bangladeshDistricts = [
   'Bagerhat', 'Bandarban', 'Barguna', 'Barishal', 'Bhola', 'Bogra',
@@ -56,7 +56,7 @@ const formSchema = z.object({
 });
 
 export default function CheckoutPage() {
-  const { cart, clearCart, removeFromCart } = useCart();
+  const { cart, clearCart, removeFromCart, updateQuantity } = useCart();
   const { toast } = useToast();
   const router = useRouter();
   const [shippingCharge, setShippingCharge] = useState<number | null>(null);
@@ -237,7 +237,30 @@ export default function CheckoutPage() {
                                             </div>
                                             <div className="flex-1">
                                                 <p className="text-sm font-medium leading-tight">{item.product.name}</p>
-                                                <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
+                                                <div className="flex items-center mt-1">
+                                                    <Button
+                                                        variant="outline"
+                                                        size="icon"
+                                                        className="h-6 w-6"
+                                                        onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                                                    >
+                                                        <Minus className="h-3 w-3" />
+                                                    </Button>
+                                                    <Input
+                                                        type="number"
+                                                        value={item.quantity}
+                                                        onChange={(e) => updateQuantity(item.product.id, parseInt(e.target.value) || 0)}
+                                                        className="h-6 w-10 rounded-none border-x-0 text-center px-0"
+                                                    />
+                                                    <Button
+                                                        variant="outline"
+                                                        size="icon"
+                                                        className="h-6 w-6"
+                                                        onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                                                    >
+                                                        <Plus className="h-3 w-3" />
+                                                    </Button>
+                                                </div>
                                             </div>
                                             <div className="text-sm font-medium">
                                                 {(item.product.price * item.quantity).toLocaleString()}
