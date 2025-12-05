@@ -28,7 +28,7 @@ export function AdminSidebar() {
       <SidebarContent>
         <SidebarHeader>
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold font-headline">Admin Panel</h2>
+            <h2 className="text-lg font-semibold">Admin Panel</h2>
             <SidebarTrigger />
           </div>
         </SidebarHeader>

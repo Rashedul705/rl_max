@@ -28,7 +28,7 @@ export function TrustInfo() {
             <div key={point.title} className="flex flex-col items-center text-center gap-4">
               {point.icon}
               <div>
-                <h3 className="text-xl font-bold font-headline">{point.title}</h3>
+                <h3 className="text-xl font-bold">{point.title}</h3>
                 <p className="text-muted-foreground mt-1">{point.description}</p>
               </div>
             </div>

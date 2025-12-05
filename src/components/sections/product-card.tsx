@@ -24,7 +24,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
       </CardHeader>
       <CardContent className="p-4 flex-1">
-        <CardTitle className="text-lg font-body font-bold leading-tight tracking-normal">{product.name}</CardTitle>
+        <CardTitle className="text-lg font-bold leading-tight tracking-normal">{product.name}</CardTitle>
         <p className="mt-2 text-lg font-semibold text-primary">BDT {product.price.toLocaleString()}</p>
       </CardContent>
       <CardFooter className="p-4 pt-0 flex flex-col sm:flex-row gap-2">

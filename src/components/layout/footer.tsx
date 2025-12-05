@@ -8,7 +8,7 @@ export function Footer() {
       <div className="container py-8">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           <div className="text-center md:text-left">
-            <h3 className="text-lg font-bold font-headline">Rodela&apos;s Boutique</h3>
+            <h3 className="text-lg font-bold">Rodela&apos;s Boutique</h3>
             <p className="text-sm text-muted-foreground">Your destination for premium lifestyle products.</p>
           </div>
           <div className="flex items-center gap-2">

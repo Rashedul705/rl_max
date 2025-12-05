@@ -49,7 +49,7 @@ export function ContactForm() {
       <div className="container max-w-2xl">
         <Card>
             <CardHeader className="text-center">
-                <CardTitle className="text-3xl md:text-4xl font-headline">Get In Touch</CardTitle>
+                <CardTitle className="text-3xl md:text-4xl">Get In Touch</CardTitle>
                 <CardDescription>Have a question or a special request? Send us a message!</CardDescription>
             </CardHeader>
             <CardContent>
