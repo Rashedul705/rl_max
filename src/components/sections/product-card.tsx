@@ -31,7 +31,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <AddToCartButton product={product} variant="outline" className="w-full flex-1">
           Add to Cart
         </AddToCartButton>
-        <AddToCartButton product={product} className="w-full flex-1 bg-accent hover:bg-accent/90 text-accent-foreground">
+        <AddToCartButton product={product} redirectToCheckout className="w-full flex-1 bg-accent hover:bg-accent/90 text-accent-foreground">
           Order Now
         </AddToCartButton>
       </CardFooter>
