@@ -27,7 +27,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <CardTitle className="text-lg font-bold leading-tight tracking-normal">{product.name}</CardTitle>
         <p className="mt-2 text-lg font-semibold text-primary">BDT {product.price.toLocaleString()}</p>
       </CardContent>
-      <CardFooter className="p-4 pt-0 flex flex-col sm:flex-row gap-2">
+      <CardFooter className="p-4 pt-0 flex flex-col sm:flex-row gap-2 justify-center">
         <AddToCartButton product={product} variant="outline" className="w-full flex-1">
           Add to Cart
         </AddToCartButton>
