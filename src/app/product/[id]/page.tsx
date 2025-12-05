@@ -141,15 +141,6 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
                 )}
               </div>
 
-              <div className="mt-6 prose prose-stone max-w-none text-muted-foreground">
-                <p>
-                  This is a placeholder description for the {product.name}. A
-                  more detailed and compelling description will be available
-                  soon, highlighting its unique features, materials, and why
-                  it's a must-have item.
-                </p>
-              </div>
-
               <div className="mt-8 flex flex-col sm:flex-row gap-2">
                 <AddToCartButton
                   product={product}
