@@ -42,7 +42,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { recentOrders as allOrders } from "@/lib/data";
+import { recentOrders as allOrders, products as allProducts } from "@/lib/data";
 import Link from "next/link";
 import {
   Pagination,
@@ -62,6 +62,12 @@ export default function AdminOrdersPage() {
   const currentOrders = allOrders.slice(indexOfFirstOrder, indexOfLastOrder);
 
   const totalPages = Math.ceil(allOrders.length / ordersPerPage);
+
+  const getProductSlug = (productName: string) => {
+    const product = allProducts.find(p => p.name === productName);
+    if (!product) return '#';
+    return `/product/${product.name.toLowerCase().replace(/\s+/g, '-')}`;
+  };
 
     return (
         <div className="flex flex-col">
@@ -141,7 +147,11 @@ export default function AdminOrdersPage() {
                                                         {order.products.map((product, index) => (
                                                             <div key={index} className="flex justify-between items-center">
                                                                 <div>
-                                                                    <p className="font-medium">{product.name}</p>
+                                                                    <p className="font-medium">
+                                                                        <Link href={getProductSlug(product.name)} className="hover:underline" target="_blank">
+                                                                            {product.name}
+                                                                        </Link>
+                                                                    </p>
                                                                     <p className="text-sm text-muted-foreground">Quantity: {product.quantity}</p>
                                                                 </div>
                                                                 <p className="text-sm font-medium">BDT {(product.price * product.quantity).toLocaleString()}</p>
