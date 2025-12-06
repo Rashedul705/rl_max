@@ -70,7 +70,7 @@ export default function AdminProductsPage() {
                                 {products.map(product => (
                                      <TableRow key={product.id}>
                                         <TableCell className="hidden sm:table-cell">
-                                            <Image src={product.image} alt={product.name} width={40} height={40} className="rounded-md object-cover" />
+                                            <Image src={product.image} alt={product.name} width={60} height={60} className="rounded-md object-cover" />
                                         </TableCell>
                                         <TableCell className="font-medium">{product.name}</TableCell>
                                         <TableCell>
