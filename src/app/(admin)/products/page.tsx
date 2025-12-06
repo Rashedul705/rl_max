@@ -37,19 +37,24 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { products, categories } from "@/lib/data";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 export default function AdminProductsPage() {
     
     const [selectedCategory, setSelectedCategory] = useState('all');
+    const [showLowStock, setShowLowStock] = useState(false);
 
     const getCategoryName = (categoryId: string) => {
         const category = categories.find(c => c.id === categoryId);
         return category ? category.name : 'N/A';
     }
 
-    const filteredProducts = selectedCategory === 'all'
-        ? products
-        : products.filter(p => p.category === selectedCategory);
+    const filteredProducts = products.filter(product => {
+        const categoryMatch = selectedCategory === 'all' || product.category === selectedCategory;
+        const stockMatch = !showLowStock || product.stock < 5;
+        return categoryMatch && stockMatch;
+    });
 
     return (
         <div className="flex flex-col">
@@ -70,20 +75,26 @@ export default function AdminProductsPage() {
                                 <CardTitle>All Products</CardTitle>
                                 <CardDescription>Manage your products and view their sales performance.</CardDescription>
                             </div>
-                            <div className="w-full sm:w-auto">
-                                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                                    <SelectTrigger className="w-full sm:w-[180px]">
-                                        <SelectValue placeholder="Filter by category" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="all">All Products</SelectItem>
-                                        {categories.map(category => (
-                                            <SelectItem key={category.id} value={category.id}>
-                                                {category.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                                <div className="flex items-center space-x-2">
+                                    <Checkbox id="low-stock" checked={showLowStock} onCheckedChange={(checked) => setShowLowStock(!!checked)} />
+                                    <Label htmlFor="low-stock">Filter low stock</Label>
+                                </div>
+                                <div className="w-full sm:w-auto">
+                                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                                        <SelectTrigger className="w-full sm:w-[180px]">
+                                            <SelectValue placeholder="Filter by category" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="all">All Products</SelectItem>
+                                            {categories.map(category => (
+                                                <SelectItem key={category.id} value={category.id}>
+                                                    {category.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
                             </div>
                         </div>
                     </CardHeader>
@@ -113,7 +124,7 @@ export default function AdminProductsPage() {
                                         </TableCell>
                                         <TableCell>
                                             {product.stock > 0 ? (
-                                                <Badge variant="secondary">{product.stock} in stock</Badge>
+                                                <Badge variant={product.stock < 5 ? 'destructive' : 'secondary'}>{product.stock} in stock</Badge>
                                             ) : (
                                                 <Badge variant="destructive">Out of stock</Badge>
                                             )}
