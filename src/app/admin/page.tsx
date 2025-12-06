@@ -29,36 +29,20 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import { recentOrders as allOrders } from "@/lib/data";
+import { recentOrders as allOrders, products as allProducts } from "@/lib/data";
 import Link from "next/link";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 
 
 export default function AdminDashboardPage() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const ordersPerPage = 10;
 
   // Use the first 5 for "Recent Orders" card
   const recentOrders = allOrders.slice(0, 5);
 
-  const indexOfLastOrder = currentPage * ordersPerPage;
-  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-  const currentOrders = allOrders.slice(indexOfFirstOrder, indexOfLastOrder);
-
-  const totalPages = Math.ceil(allOrders.length / ordersPerPage);
+  const getProductSlug = (productName: string) => {
+    const product = allProducts.find(p => p.name === productName);
+    if (!product) return '#';
+    return `/product/${product.name.toLowerCase().replace(/\s+/g, '-')}`;
+  };
 
   return (
     <div className="flex flex-col">
@@ -125,11 +109,54 @@ export default function AdminDashboardPage() {
                         </TableHeader>
                         <TableBody>
                             {recentOrders.map(order => (
-                                <TableRow key={order.id}>
-                                    <TableCell className="font-medium">{order.id}</TableCell>
-                                    <TableCell>{order.customer}</TableCell>
-                                    <TableCell className="text-right">{order.amount}</TableCell>
-                                </TableRow>
+                                <Dialog key={order.id}>
+                                    <TableRow>
+                                        <TableCell>
+                                             <DialogTrigger asChild>
+                                                <Button variant="link" className="font-medium px-0">
+                                                    {order.id}
+                                                </Button>
+                                             </DialogTrigger>
+                                        </TableCell>
+                                        <TableCell>{order.customer}</TableCell>
+                                        <TableCell className="text-right">{order.amount}</TableCell>
+                                    </TableRow>
+                                     <DialogContent className="sm:max-w-[425px]">
+                                        <DialogHeader>
+                                            <DialogTitle>Order {order.id}</DialogTitle>
+                                            <DialogDescription>
+                                                Products ordered by {order.customer}.
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <div className="grid gap-4 py-4">
+                                            {order.products.map((product, index) => (
+                                                <div key={index} className="flex justify-between items-center">
+                                                    <div>
+                                                        <p className="font-medium">
+                                                            <Link href={getProductSlug(product.name)} className="hover:underline" target="_blank">
+                                                                {product.name}
+                                                            </Link>
+                                                        </p>
+                                                        <p className="text-sm text-muted-foreground">Quantity: {product.quantity}</p>
+                                                    </div>
+                                                    <p className="text-sm font-medium">BDT {(product.price * product.quantity).toLocaleString()}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                         <div className="flex justify-between items-center font-bold border-t pt-4">
+                                            <p>Total</p>
+                                            <p>BDT {order.amount}</p>
+                                        </div>
+                                        <DialogFooter>
+                                            <Button asChild>
+                                                <Link href={`/admin/invoice/${order.id}`}>
+                                                    <Printer className="mr-2 h-4 w-4" />
+                                                    Print Invoice
+                                                </Link>
+                                            </Button>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
                             ))}
                         </TableBody>
                     </Table>
