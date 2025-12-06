@@ -16,7 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { DollarSign, ShoppingBag, Users, Activity, Package } from "lucide-react";
+import { DollarSign, ShoppingBag, Users, Activity, Package, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,6 +25,7 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogDescription,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import {
     Select,
@@ -152,6 +153,12 @@ export default function AdminDashboardPage() {
                                                 <p>Total</p>
                                                 <p>BDT {order.amount}</p>
                                             </div>
+                                            <DialogFooter>
+                                                <Button onClick={() => window.print()}>
+                                                    <Printer className="mr-2 h-4 w-4" />
+                                                    Print Invoice
+                                                </Button>
+                                            </DialogFooter>
                                         </DialogContent>
                                     </Dialog>
                                 </TableCell>
