@@ -15,7 +15,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { DollarSign, ShoppingBag, Users, Activity, Package, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,14 +33,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-
-const recentOrders = [
-    { id: 'ORD001', customer: 'Sadia Islam', amount: '2,800', status: 'Delivered', products: [{ name: 'Classic Cotton Three-Piece', quantity: 1, price: 2800 }] },
-    { id: 'ORD002', customer: 'Karim Ahmed', amount: '1,200', status: 'Shipped', products: [{ name: 'Premium Silk Hijab', quantity: 1, price: 1200 }] },
-    { id: 'ORD003', customer: 'Nusrat Jahan', amount: '4,500', status: 'Processing', products: [{ name: 'Modern Silk Three-Piece', quantity: 1, price: 4500 }] },
-    { id: 'ORD004', customer: 'Rahim Sheikh', amount: '3,500', status: 'Pending', products: [{ name: 'Floral Print Bedsheet', quantity: 1, price: 3500 }] },
-    { id: 'ORD005', customer: 'Farhana Begum', amount: '800', status: 'Cancelled', products: [{ name: 'Soft Cotton Hijab', quantity: 1, price: 800 }] },
-];
+import { recentOrders } from "@/lib/data";
+import Link from "next/link";
 
 export default function AdminDashboardPage() {
   return (
@@ -154,9 +147,11 @@ export default function AdminDashboardPage() {
                                                 <p>BDT {order.amount}</p>
                                             </div>
                                             <DialogFooter>
-                                                <Button onClick={() => window.print()}>
-                                                    <Printer className="mr-2 h-4 w-4" />
-                                                    Print Invoice
+                                                <Button asChild>
+                                                    <Link href={`/admin/invoice/${order.id}`} target="_blank">
+                                                        <Printer className="mr-2 h-4 w-4" />
+                                                        Print Invoice
+                                                    </Link>
                                                 </Button>
                                             </DialogFooter>
                                         </DialogContent>

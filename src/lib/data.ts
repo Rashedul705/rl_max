@@ -20,6 +20,18 @@ export type Category = {
   name: string;
 };
 
+export type Order = {
+    id: string;
+    customer: string;
+    phone: string;
+    address: string;
+    amount: string;
+    status: 'Delivered' | 'Shipped' | 'Processing' | 'Pending' | 'Cancelled';
+    products: { name: string; quantity: number; price: number }[];
+    date: string;
+};
+
+
 export const categories: Category[] = [
   { id: 'three-piece', name: 'Three-Piece' },
   { id: 'hijab', name: 'Hijab' },
@@ -136,4 +148,12 @@ export const faqs = [
         question: "Is Cash on Delivery (COD) available?",
         answer: "Yes, Cash on Delivery is available for all orders across Bangladesh."
     }
+];
+
+export const recentOrders: Order[] = [
+    { id: 'ORD001', customer: 'Sadia Islam', phone: '017********', address: 'Rajshahi', amount: '2800', status: 'Delivered', products: [{ name: 'Classic Cotton Three-Piece', quantity: 1, price: 2800 }], date: '2024-07-28' },
+    { id: 'ORD002', customer: 'Karim Ahmed', phone: '018********', address: 'Dhaka', amount: '1200', status: 'Shipped', products: [{ name: 'Premium Silk Hijab', quantity: 1, price: 1200 }], date: '2024-07-28' },
+    { id: 'ORD003', customer: 'Nusrat Jahan', phone: '019********', address: 'Chittagong', amount: '4500', status: 'Processing', products: [{ name: 'Modern Silk Three-Piece', quantity: 1, price: 4500 }], date: '2024-07-27' },
+    { id: 'ORD004', customer: 'Rahim Sheikh', phone: '016********', address: 'Sylhet', amount: '3500', status: 'Pending', products: [{ name: 'Floral Print Bedsheet', quantity: 1, price: 3500 }], date: '2024-07-27' },
+    { id: 'ORD005', customer: 'Farhana Begum', phone: '015********', address: 'Rajshahi', amount: '800', status: 'Cancelled', products: [{ name: 'Soft Cotton Hijab', quantity: 1, price: 800 }], date: '2024-07-26' },
 ];
