@@ -57,6 +57,14 @@ export default function NewProductPage() {
                   placeholder="A beautifully crafted three-piece suit..."
                 />
               </div>
+              <div className="grid gap-3">
+                <Label htmlFor="highlights">Product Highlights</Label>
+                <Textarea
+                  id="highlights"
+                  placeholder="e.g.&#10;- Made from 100% premium cotton&#10;- Features intricate embroidery"
+                  rows={4}
+                />
+              </div>
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="grid gap-3">
                   <Label htmlFor="price">Price (BDT)</Label>
