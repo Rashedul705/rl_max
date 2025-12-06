@@ -39,6 +39,10 @@ export function Footer() {
                 <Mail className="h-5 w-5 mt-1 flex-shrink-0" />
                 <a href="mailto:support@rodelas.com" className="hover:text-foreground">support@rodelas.com</a>
               </li>
+              <li className="flex items-start gap-3">
+                <Facebook className="h-5 w-5 mt-1 flex-shrink-0" />
+                <a href="https://www.facebook.com/rodelaslifestyle" target="_blank" rel="noopener noreferrer" className="hover:text-foreground">Facebook Page</a>
+              </li>
             </ul>
           </div>
         </div>
