@@ -1,5 +1,7 @@
+
 'use client';
 
+import { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -15,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DollarSign, ShoppingBag, Users, Activity, Package, Printer } from "lucide-react";
+import { DollarSign, ShoppingBag, Users, Activity, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -33,10 +35,27 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { recentOrders } from "@/lib/data";
+import { recentOrders as allOrders } from "@/lib/data";
 import Link from "next/link";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+
 
 export default function AdminDashboardPage() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const ordersPerPage = 10;
+
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  const currentOrders = allOrders.slice(indexOfFirstOrder, indexOfLastOrder);
+
+  const totalPages = Math.ceil(allOrders.length / ordersPerPage);
+
   return (
     <div className="flex flex-col">
       <header className="flex h-16 items-center border-b bg-background px-6 shrink-0">
@@ -87,8 +106,8 @@ export default function AdminDashboardPage() {
         </div>
         <Card className="mt-6">
             <CardHeader>
-                <CardTitle>Recent Orders</CardTitle>
-                <CardDescription>A list of the last 5 orders.</CardDescription>
+                <CardTitle>All Orders</CardTitle>
+                <CardDescription>A complete list of all customer orders.</CardDescription>
             </CardHeader>
             <CardContent>
                 <Table>
@@ -102,7 +121,7 @@ export default function AdminDashboardPage() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {recentOrders.map(order => (
+                        {currentOrders.map(order => (
                              <TableRow key={order.id}>
                                 <TableCell className="font-medium">{order.id}</TableCell>
                                 <TableCell>{order.customer}</TableCell>
@@ -164,6 +183,37 @@ export default function AdminDashboardPage() {
                     </TableBody>
                 </Table>
             </CardContent>
+            <CardFooter>
+                 <Pagination>
+                    <PaginationContent>
+                        <PaginationItem>
+                        <PaginationPrevious
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setCurrentPage((prev) => Math.max(prev - 1, 1));
+                            }}
+                            className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
+                        />
+                        </PaginationItem>
+                         <PaginationItem>
+                            <span className="p-2 text-sm">
+                                Page {currentPage} of {totalPages}
+                            </span>
+                        </PaginationItem>
+                        <PaginationItem>
+                        <PaginationNext
+                            href="#"
+                             onClick={(e) => {
+                                e.preventDefault();
+                                setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+                            }}
+                             className={currentPage === totalPages ? 'pointer-events-none opacity_50' : ''}
+                        />
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
+            </CardFooter>
         </Card>
       </main>
     </div>

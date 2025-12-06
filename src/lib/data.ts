@@ -1,3 +1,4 @@
+
 import placeholderData from './placeholder-images.json';
 
 const { placeholderImages } = placeholderData;
@@ -150,10 +151,38 @@ export const faqs = [
     }
 ];
 
-export const recentOrders: Order[] = [
-    { id: 'ORD001', customer: 'Sadia Islam', phone: '01712345678', address: 'Rajshahi', amount: '2800', status: 'Delivered', products: [{ name: 'Classic Cotton Three-Piece', quantity: 1, price: 2800 }], date: '2024-07-28' },
-    { id: 'ORD002', customer: 'Karim Ahmed', phone: '01823456789', address: 'Dhaka', amount: '1200', status: 'Shipped', products: [{ name: 'Premium Silk Hijab', quantity: 1, price: 1200 }], date: '2024-07-28' },
-    { id: 'ORD003', customer: 'Nusrat Jahan', phone: '01934567890', address: 'Chittagong', amount: '4500', status: 'Processing', products: [{ name: 'Modern Silk Three-Piece', quantity: 1, price: 4500 }], date: '2024-07-27' },
-    { id: 'ORD004', customer: 'Rahim Sheikh', phone: '01645678901', address: 'Sylhet', amount: '3500', status: 'Pending', products: [{ name: 'Floral Print Bedsheet', quantity: 1, price: 3500 }], date: '2024-07-27' },
-    { id: 'ORD005', customer: 'Farhana Begum', phone: '01556789012', address: 'Rajshahi', amount: '800', status: 'Cancelled', products: [{ name: 'Soft Cotton Hijab', quantity: 1, price: 800 }], date: '2024-07-26' },
-];
+const generateRandomDate = (start: Date, end: Date) => {
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+};
+
+const generateOrder = (index: number): Order => {
+  const customerNames = ['Sadia Islam', 'Karim Ahmed', 'Nusrat Jahan', 'Rahim Sheikh', 'Farhana Begum', 'Liam Smith', 'Olivia Jones', 'Noah Williams', 'Emma Brown', 'Oliver Taylor'];
+  const phones = ['01712345678', '01823456789', '01934567890', '01645678901', '01556789012', '01345678901', '01456789012', '01567890123', '01678901234', '01789012345'];
+  const addresses = ['Rajshahi', 'Dhaka', 'Chittagong', 'Sylhet', 'Khulna', 'Barishal', 'Rangpur', 'Mymensingh', 'Comilla', 'Gazipur'];
+  const statuses: Order['status'][] = ['Delivered', 'Shipped', 'Processing', 'Pending', 'Cancelled'];
+  
+  const product1 = products[Math.floor(Math.random() * products.length)];
+  const product2 = products[Math.floor(Math.random() * products.length)];
+
+  const orderProducts = [{ name: product1.name, quantity: 1, price: product1.price }];
+  let amount = product1.price;
+
+  if (Math.random() > 0.5) {
+      orderProducts.push({ name: product2.name, quantity: 1, price: product2.price });
+      amount += product2.price;
+  }
+  
+  return {
+    id: `ORD${String(index + 1).padStart(3, '0')}`,
+    customer: customerNames[Math.floor(Math.random() * customerNames.length)],
+    phone: phones[Math.floor(Math.random() * phones.length)],
+    address: addresses[Math.floor(Math.random() * addresses.length)],
+    amount: String(amount),
+    status: statuses[Math.floor(Math.random() * statuses.length)],
+    products: orderProducts,
+    date: generateRandomDate(new Date(2024, 0, 1), new Date()).toISOString().split('T')[0],
+  };
+};
+
+
+export const recentOrders: Order[] = Array.from({ length: 50 }, (_, i) => generateOrder(i));
