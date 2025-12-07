@@ -46,8 +46,19 @@ const formSchema = z.object({
   price: z.coerce.number().positive('Price must be a positive number.'),
   stock: z.coerce.number().int().nonnegative('Stock must be a non-negative integer.'),
   category: z.string().min(1, 'Please select a category.'),
-  productImage: z.instanceof(FileList).refine((files) => files?.length === 1, 'Main image is required.'),
-  galleryImages: z.instanceof(FileList).optional(),
+  productImage: z.any()
+    .refine((files) => files?.length === 1, 'Main image is required.')
+    .refine((files) => files?.[0]?.size <= 5000000, `Max file size is 5MB.`)
+    .refine(
+      (files) => ["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(files?.[0]?.type),
+      ".jpg, .jpeg, .png and .webp files are accepted."
+    ),
+  galleryImages: z.any()
+    .refine((files) => Array.from(files).every((file: any) => file?.size <= 5000000), `Max file size is 5MB.`)
+    .refine(
+      (files) => Array.from(files).every((file: any) => ["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(file?.type)),
+      ".jpg, .jpeg, .png and .webp files are accepted."
+    ).optional(),
 });
 
 export default function AdminNewProductPage() {
@@ -298,3 +309,5 @@ export default function AdminNewProductPage() {
     </>
   );
 }
+
+    
