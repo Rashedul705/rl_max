@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   Card,
   CardContent,
@@ -46,10 +46,14 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 
 export default function AdminOrdersPage() {
-  const [orders, setOrders] = useState<Order[]>(recentOrders);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   
+  useEffect(() => {
+    setOrders(recentOrders);
+  }, []);
+
   const filteredOrders = useMemo(() => {
     if (statusFilter === 'all') return orders;
     return orders.filter(order => order.status === statusFilter);
