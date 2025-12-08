@@ -10,7 +10,7 @@ export default function AdminLayout({
 }>) {
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-blue-100">
+      <div className="flex min-h-screen w-full bg-muted/40">
         <AdminSidebar />
         <div className="flex flex-1 flex-col">
           <AdminMobileHeader />
