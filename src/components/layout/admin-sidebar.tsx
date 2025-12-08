@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { ReactNode } from "react";
-import { LayoutDashboard, ShoppingCart, Package, Users, Pencil, Home, Menu, Bot, Shapes, AreaChart, MessageSquareQuote } from "lucide-react";
+import { LayoutDashboard, ShoppingCart, Package, Users, Pencil, Home, Menu, Bot, Shapes, AreaChart, MessageSquareQuote, Truck } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useSidebar, SidebarTrigger, SidebarClose } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
@@ -12,10 +12,11 @@ import { Button } from "@/components/ui/button";
 const adminNavItems = [
   { href: "/admin", label: "Dashboard", icon: <LayoutDashboard /> },
   { href: "/admin/analytics", label: "Analytics", icon: <AreaChart /> },
-  { href: "/admin/products", label: "Products", icon: <Package /> },
   { href: "/admin/orders", label: "Orders", icon: <ShoppingCart /> },
+  { href: "/admin/products", label: "Products", icon: <Package /> },
   { href: "/admin/categories", label: "Categories", icon: <Shapes /> },
   { href: "/admin/customers", label: "Customers", icon: <Users /> },
+  { href: "/admin/shipping", label: "Shipping", icon: <Truck /> },
   { href: "/admin/inquiries", label: "Inquiries", icon: <MessageSquareQuote /> },
   { href: "/admin/content", label: "Content", icon: <Pencil /> },
 ];
