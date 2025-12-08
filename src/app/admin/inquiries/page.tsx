@@ -208,16 +208,9 @@ export default function AdminInquiriesPage() {
                     filteredInquiries.map((inquiry) => (
                     <TableRow key={inquiry.id}>
                       <TableCell>
-                        <div className="flex items-center gap-3">
-                          <Avatar className="h-9 w-9">
-                            <AvatarFallback>
-                              {getInitials(inquiry.customerName)}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="grid gap-0.5">
-                            <div className="font-medium">{inquiry.customerName}</div>
-                            <div className="text-xs text-muted-foreground">{inquiry.customerEmail}</div>
-                          </div>
+                        <div className="grid gap-0.5">
+                          <div className="font-medium">{inquiry.customerName}</div>
+                          <div className="text-xs text-muted-foreground">{inquiry.customerEmail}</div>
                         </div>
                       </TableCell>
                       <TableCell className="font-medium">{inquiry.subject}</TableCell>
