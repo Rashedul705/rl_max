@@ -33,7 +33,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -116,6 +116,9 @@ export default function AdminInquiriesPage() {
   const filteredInquiries = useMemo(() => {
     if (filter === 'all') {
       return inquiries;
+    }
+    if (filter === 'closed') {
+        return inquiries.filter(inquiry => inquiry.status.toLowerCase() === 'closed');
     }
     return inquiries.filter(inquiry => inquiry.status.toLowerCase() === filter);
   }, [inquiries, filter]);
