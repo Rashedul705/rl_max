@@ -18,13 +18,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import {
   Sheet,
   SheetContent,
   SheetHeader,
@@ -43,8 +36,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { MoreHorizontal } from 'lucide-react';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
@@ -129,14 +120,6 @@ export default function AdminInquiriesPage() {
     return inquiries.filter(inquiry => inquiry.status.toLowerCase() === filter);
   }, [inquiries, filter]);
   
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase();
-  }
-  
   const handleStatusChange = (inquiryId: string, newStatus: Inquiry['status']) => {
     setInquiries(currentInquiries =>
       currentInquiries.map(inq =>
@@ -186,6 +169,7 @@ export default function AdminInquiriesPage() {
               <TabsTrigger value="all">All</TabsTrigger>
               <TabsTrigger value="pending">Pending</TabsTrigger>
               <TabsTrigger value="resolved">Resolved</TabsTrigger>
+              <TabsTrigger value="closed">Closed</TabsTrigger>
             </TabsList>
           </Tabs>
         </CardHeader>
@@ -198,9 +182,7 @@ export default function AdminInquiriesPage() {
                   <TableHead>Subject</TableHead>
                   <TableHead className="hidden md:table-cell">Date</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>
-                    <span className="sr-only">Actions</span>
-                  </TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -209,8 +191,8 @@ export default function AdminInquiriesPage() {
                     <TableRow key={inquiry.id}>
                       <TableCell>
                         <div className="grid gap-0.5">
-                          <div className="font-medium">{inquiry.customerName}</div>
-                          <div className="text-xs text-muted-foreground">{inquiry.customerEmail}</div>
+                            <div className="font-medium">{inquiry.customerName}</div>
+                            <div className="text-xs text-muted-foreground">{inquiry.customerEmail}</div>
                         </div>
                       </TableCell>
                       <TableCell className="font-medium">{inquiry.subject}</TableCell>
@@ -222,21 +204,10 @@ export default function AdminInquiriesPage() {
                           {inquiry.status}
                         </Badge>
                       </TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button aria-haspopup="true" size="icon" variant="ghost">
-                              <MoreHorizontal className="h-4 w-4" />
-                              <span className="sr-only">Toggle menu</span>
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem onSelect={() => setSelectedInquiry(inquiry)}>
-                              View Details
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                      <TableCell className="text-right">
+                        <Button variant="outline" size="sm" onClick={() => setSelectedInquiry(inquiry)}>
+                            View Details
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))
