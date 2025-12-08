@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { LayoutDashboard, ShoppingCart, Package, Users, Pencil, Home, Menu, Bot, Shapes, AreaChart, MessageSquareQuote, Truck, LogOut } from "lucide-react";
+import { LayoutDashboard, ShoppingCart, Package, Users, Pencil, Home, Menu, Bot, Shapes, AreaChart, MessageSquareQuote, Truck, LogOut, User } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useSidebar, SidebarTrigger, SidebarClose } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,7 @@ const adminNavItems = [
   { href: "/admin/shipping", label: "Shipping", icon: <Truck /> },
   { href: "/admin/inquiries", label: "Inquiries", icon: <MessageSquareQuote /> },
   { href: "/admin/content", label: "Content", icon: <Pencil /> },
+  { href: "/admin/profile", label: "Profile", icon: <User /> },
 ];
 
 function AdminNavLinks() {
