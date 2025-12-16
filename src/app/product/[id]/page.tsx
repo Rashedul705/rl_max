@@ -94,7 +94,7 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
       <main className="flex-1 py-12 md:py-16">
         <div className="container">
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-            <div className="w-3/4 mx-auto flex gap-4">
+            <div className="w-full mx-auto flex gap-4">
               {/* Thumbnails - Left Side */}
               <div className="flex flex-col gap-2 w-[20%]">
                 {galleryImages.map((img, index) => (
