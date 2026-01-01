@@ -43,6 +43,7 @@ type Customer = {
   totalOrders: number;
   totalSpent: number;
   email?: string;
+  latestOrderDate: Date;
 };
 
 type Order = {
@@ -92,6 +93,10 @@ export default function AdminCustomersPage() {
       if (existingCustomer) {
         existingCustomer.totalOrders += 1;
         existingCustomer.totalSpent += orderAmount;
+        const orderDate = new Date(order.date);
+        if (orderDate > existingCustomer.latestOrderDate) {
+          existingCustomer.latestOrderDate = orderDate;
+        }
       } else {
         customerMap.set(customerKey, {
           name: order.customer,
@@ -99,6 +104,7 @@ export default function AdminCustomersPage() {
           email: order.email,
           totalOrders: 1,
           totalSpent: orderAmount,
+          latestOrderDate: new Date(order.date),
         });
       }
     });
@@ -108,7 +114,7 @@ export default function AdminCustomersPage() {
         customer.phone.includes(searchQuery) || customer.name.toLowerCase().includes(searchQuery.toLowerCase())
       )
       .sort(
-        (a, b) => b.totalSpent - a.totalSpent
+        (a, b) => b.latestOrderDate.getTime() - a.latestOrderDate.getTime()
       );
   }, [orders, searchQuery]);
 

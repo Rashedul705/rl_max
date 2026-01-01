@@ -135,8 +135,11 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
-  // Use product.images if available, otherwise fallback to the single product.image
-  const galleryImages = product.images && product.images.length > 0 ? product.images : [product.image];
+  // Ensure the main image is always first in the gallery
+  const galleryImages = [
+    product.image,
+    ...(product.images || [])
+  ].filter((img, index, self) => img && self.indexOf(img) === index);
 
   const handleThumbnailClick = (index: number) => {
     api?.scrollTo(index);

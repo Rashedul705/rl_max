@@ -1,8 +1,25 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { categories } from "@/lib/data";
+import { useEffect, useState } from "react";
+import { apiClient } from "@/lib/api-client";
 
 export function CategoryNav() {
+  const [categories, setCategories] = useState<{ id: string, name: string }[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await apiClient.get<{ id: string, name: string }[]>('/categories');
+        if (data) setCategories(data);
+      } catch (error) {
+        console.error("Failed to fetch categories", error);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  if (categories.length === 0) return null;
+
   return (
     <section id="categories" className="pt-12 pb-6 md:pt-16 md:pb-8 bg-background">
       <div className="container">

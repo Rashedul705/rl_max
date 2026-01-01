@@ -1,13 +1,27 @@
 "use client";
 
-import { categories } from "@/lib/data";
 import { CategorySection } from "./category-section";
 import { useProducts } from "@/hooks/useProducts";
 import { Loader2, AlertCircle } from "lucide-react";
 import { Product } from "@/lib/data";
+import { useState, useEffect } from "react";
+import { apiClient } from "@/lib/api-client";
 
 export function ProductCatalog() {
   const { products, loading, error } = useProducts();
+  const [categories, setCategories] = useState<{ id: string, name: string }[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await apiClient.get<{ id: string, name: string }[]>('/categories');
+        if (data) setCategories(data);
+      } catch (error) {
+        console.error("Failed to fetch categories", error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   if (loading) {
     return (
@@ -30,13 +44,28 @@ export function ProductCatalog() {
   return (
     <div className="bg-background">
       <div className="container pt-4 pb-16 md:pt-6 md:pb-24 space-y-16">
-        {categories.map((category) => (
-          <CategorySection
-            key={category.id}
-            category={category}
-            products={(products as unknown as Product[]).filter((product) => product.category === category.id)}
-          />
-        ))}
+        {categories.map((category) => {
+          const categoryProducts = (products as unknown as Product[])
+            .filter((product) => product.category === category.id)
+            .sort((a, b) => {
+              // Out of stock items should go to the bottom
+              const aStock = a.stock > 0;
+              const bStock = b.stock > 0;
+              if (aStock && !bStock) return -1;
+              if (!aStock && bStock) return 1;
+              return 0;
+            });
+
+          if (categoryProducts.length === 0) return null;
+
+          return (
+            <CategorySection
+              key={category.id}
+              category={category}
+              products={categoryProducts}
+            />
+          );
+        })}
       </div>
     </div>
   );

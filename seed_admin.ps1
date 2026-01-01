@@ -3,7 +3,7 @@ $baseUrl = "http://localhost:9002/api"
 # 1. Register User
 $userData = @{
     name     = "Admin User"
-    email    = "admin@rodela.com"
+    email    = "admin@rodelaslifestyle.com"
     password = "admin123"
 } | ConvertTo-Json
 
@@ -31,7 +31,7 @@ Write-Host "`n2. Fetching User ID..."
 try {
     $usersResponse = Invoke-RestMethod -Uri "$baseUrl/users" -Method Get
     if ($usersResponse.success) {
-        $adminUser = $usersResponse.data | Where-Object { $_.email -eq "admin@rodela.com" }
+        $adminUser = $usersResponse.data | Where-Object { $_.email -eq "admin@rodelaslifestyle.com" }
         if ($adminUser) {
             $userId = $adminUser._id
             Write-Host "   Found Admin User ID: $userId" -ForegroundColor Green
@@ -49,7 +49,7 @@ try {
                 if ($promoteResponse.success) {
                     Write-Host "   SUCCESS: User promoted to Admin!" -ForegroundColor Green
                     Write-Host "`nCredentials:" -ForegroundColor Cyan
-                    Write-Host "Email: admin@rodela.com" -ForegroundColor Cyan
+                    Write-Host "Email: admin@rodelaslifestyle.com" -ForegroundColor Cyan
                     Write-Host "Password: admin123" -ForegroundColor Cyan
                 }
                 else {

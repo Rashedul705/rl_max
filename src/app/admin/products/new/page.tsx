@@ -354,6 +354,15 @@ export default function AdminNewProductPage() {
                                 alt="Main preview"
                                 className="w-full h-full object-cover rounded-md"
                               />
+                              <Button
+                                type="button"
+                                variant="destructive"
+                                size="icon"
+                                className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                                onClick={() => onChange([])}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
                             </div>
                           )}
                         </FormItem>
@@ -378,7 +387,9 @@ export default function AdminNewProductPage() {
                               accept="image/*"
                               onChange={(e) => {
                                 if (e.target.files) {
-                                  onChange(Array.from(e.target.files));
+                                  const newFiles = Array.from(e.target.files);
+                                  const currentFiles = value || [];
+                                  onChange([...currentFiles, ...newFiles]);
                                 }
                               }}
                               {...rest}
@@ -386,6 +397,32 @@ export default function AdminNewProductPage() {
                             />
                           </FormControl>
                           <FormMessage />
+                          {value && value.length > 0 && (
+                            <div className="grid grid-cols-3 gap-2 mt-4">
+                              {Array.from(value as File[]).map((file, index) => (
+                                <div key={index} className="relative aspect-square group">
+                                  <img
+                                    src={URL.createObjectURL(file)}
+                                    alt={`Gallery preview ${index}`}
+                                    className="w-full h-full object-cover rounded-md"
+                                  />
+                                  <Button
+                                    type="button"
+                                    variant="destructive"
+                                    size="icon"
+                                    className="absolute top-1 right-1 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                                    onClick={() => {
+                                      const newFiles = [...value];
+                                      newFiles.splice(index, 1);
+                                      onChange(newFiles);
+                                    }}
+                                  >
+                                    <Trash2 className="h-3 w-3" />
+                                  </Button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </FormItem>
                       )}
                     />
